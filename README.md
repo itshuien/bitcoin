@@ -18,6 +18,8 @@ For more information, as well as an immediately useable, binary version of
 the Bitcoin Core software, see https://bitcoin.org/en/download, or read the
 [original whitepaper](https://bitcoincore.org/bitcoin.pdf).
 
+To build the bitcoin from the source codes, please refer to the doc folder and look for the guide for your own specific system. 
+
 License
 -------
 
