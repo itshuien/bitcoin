@@ -992,6 +992,7 @@ bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus:
     if (filein.IsNull())
         return error("ReadBlockFromDisk: OpenBlockFile failed for %s", pos.ToString());
 
+    // Exception Handler 
     // Read block
     try {
         filein >> block;
