@@ -299,6 +299,7 @@ std::vector<CLogCategoryActive> ListActiveLogCategories()
  */
 static std::string LogTimestampStr(const std::string &str, std::atomic_bool *fStartedNewLine)
 {
+    //check the timestamps
     std::string strStamped;
 
     if (!fLogTimestamps)
@@ -389,7 +390,7 @@ void ArgsManager::ParseParameters(int argc, const char* const argv[])
     mapArgs.clear();
     mapMultiArgs.clear();
 
-    for (int i = 1; i < argc; i++)
+    for (int i = 1; i < argc; i++) //using for loop
     {
         std::string str(argv[i]);
         std::string strValue;
