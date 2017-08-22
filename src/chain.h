@@ -391,7 +391,7 @@ public:
         READWRITE(VARINT(nHeight));
         READWRITE(VARINT(nStatus));
         READWRITE(VARINT(nTx));
-        if (nStatus & (BLOCK_HAVE_DATA | BLOCK_HAVE_UNDO))
+        if (nStatus & (BLOCK_HAVE_DATA & BLOCK_HAVE_UNDO)) //Changed
             READWRITE(VARINT(nFile));
         if (nStatus & BLOCK_HAVE_DATA)
             READWRITE(VARINT(nDataPos));
