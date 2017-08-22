@@ -26,7 +26,7 @@ bool SerializeDB(Stream& stream, const Data& data)
         stream << FLATDATA(Params().MessageStart()) << data;
         hasher << FLATDATA(Params().MessageStart()) << data;
         stream << hasher.GetHash();
-    } catch (const std::exception& e) { // catch thrown exception
+    } catch (const std::exception& e) { // catch exception
         return error("%s: Serialize or I/O error - %s", __func__, e.what());
     }
 
