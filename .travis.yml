@@ -20,6 +20,9 @@ env:
     - SDK_URL=https://bitcoincore.org/depends-sources/sdks
     - PYTHON_DEBUG=1
     - WINEDEBUG=fixme-all
+    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+    #   via the "travis encrypt" command using the project repo's public key
+    - secure: "AG4do13rsQhpvXnBzDadSCMnoe0WGhYRiQ7XfdFdcnlP1vpr4LudrVRlSrj7+OUlU0s5PPScV+NMix59lf3xbfrzKICR8bP10LusmFsf0YmbaBuTdQP/6WiAtOvlsS9Fa/BmE6dzqEHNpCWZqNMIGyMzlXxUL+kNOAgw0ZshWvEqRuxEoM9UUDN4ui5UudnuvuQF2mE4jYBGH32/47xR1mftB/V41eo+pl46ujJ0ZFXbqR6rluGG93n2U+b5n5FPpA4bgiGZaVIlznq9zZtpxfMvGDpRj6/PnzokMkjBSBT1k90TvEC/XPmBdZB8dOTLcY+IS0qRHQQg36l3iqNqe+JFf32nZZbvxmG3bO3TOD6JMFsLgcotGsBMvK29zKBov359hCDcWBgLkW31qb7MhADDtbkf85nIMG6Y+3bcPP/NaXloIlbpIRkrvHo/kvXv/BhKxVD+3RuDbLMRKnG19Bao9yxKe/jzLlRdpzctYEwbvzxd4aAOO4UGDhkweuWuALWcpvEQgigUMxT9gfzEfFaz4kPYk4xGJqDL3zI6Z+qm9xpzUrvFSEiKwHOBfykguOaZgeYK8Pi66Zmesi54rE1eymNnF1y3ZvsGcZT877ObOhhv6C3rc70xRIaBXLpeSLs7gy3B2gMOm9Fnu0IWcODg5eM5J7/WpGwFYCdpKH0="
   matrix:
 # ARM
     - HOST=arm-linux-gnueabihf PACKAGES="g++-arm-linux-gnueabihf" DEP_OPTS="NO_QT=1" CHECK_DOC=1 GOAL="install" BITCOIN_CONFIG="--enable-glibc-back-compat --enable-reduce-exports"
@@ -38,6 +41,7 @@ env:
 
 before_install:
     - export PATH=$(echo $PATH | tr ':' "\n" | sed '/\/opt\/python/d' | tr "\n" ":" | sed "s|::|:|g")
+    - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 install:
     - if [ -n "$DPKG_ADD_ARCH" ]; then sudo dpkg --add-architecture "$DPKG_ADD_ARCH" ; fi
     - if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get update; fi
@@ -73,3 +77,12 @@ script:
 after_script:
     - echo $TRAVIS_COMMIT_RANGE
     - echo $TRAVIS_COMMIT_LOG
+addons:
+  coverity_scan:
+    project:
+      name: "itshuien/bitcoin"
+      description: "Build submitted via Travis CI"
+    notification_email: huien_wong@hotmail.com
+    build_command_prepend: "./configure; make clean"
+    build_command:   "make -j 4"
+    branch_pattern: coverity_scan
