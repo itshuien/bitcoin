@@ -7,6 +7,12 @@ cache:
   - depends/built
   - depends/sdk-sources
   - $HOME/.ccache
+addons:
+  apt:
+      sources:
+          - ubuntu-toolchain-r-test
+      packages:
+          - lcov
 env:
   global:
     - MAKEJOBS=-j3
@@ -42,7 +48,7 @@ env:
 before_install:
     - export PATH=$(echo $PATH | tr ':' "\n" | sed '/\/opt\/python/d' | tr "\n" ":" | sed "s|::|:|g")
     - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
-    - pip install --user codecov
+#    - pip install --user codecov
 install:
     - if [ -n "$DPKG_ADD_ARCH" ]; then sudo dpkg --add-architecture "$DPKG_ADD_ARCH" ; fi
     - if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get update; fi
@@ -84,6 +90,7 @@ after_success:
     - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
     - lcov --list coverage.info
     - bash <(curl -s https://codecov.io/bash)
+#    - codecov
 addons:
   coverity_scan:
     project:
