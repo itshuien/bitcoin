@@ -79,7 +79,6 @@ after_script:
     - echo $TRAVIS_COMMIT_RANGE
     - echo $TRAVIS_COMMIT_LOG
 after_success:
-    - codecov
     - bash <(curl -s https://codecov.io/bash)
 addons:
   coverity_scan:
