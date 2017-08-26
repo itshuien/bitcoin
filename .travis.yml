@@ -15,6 +15,7 @@ addons:
           - lcov
 env:
   global:
+    - CODECLIMATE_REPO_TOKEN:83dd1bea1e863e28242671ceadde1667dc190dcba3fe24b263d399d7269fe2eb
     - MAKEJOBS=-j3
     - RUN_TESTS=false
     - CHECK_DOC=0
@@ -90,7 +91,7 @@ after_success:
     - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
     - lcov --list coverage.info
     - bash <(curl -s https://codecov.io/bash)
-#    - codecov
+    - codecov
 addons:
   coverity_scan:
     project:
