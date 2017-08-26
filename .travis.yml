@@ -98,11 +98,11 @@ script:
     - if [ "$RUN_TESTS" = "true" ]; then src/test/test_bitcoin --coverage --quiet ${extended}; fi
 #    - coverage run test/functional/test_runner.py
 #    - py.test --cov=test/functional/test_runner.py test_folder
-    - codeclimate-test-reporter --file .coverage
+#    - codeclimate-test-reporter --file .coverage
 after_script:
     - echo $TRAVIS_COMMIT_RANGE
     - echo $TRAVIS_COMMIT_LOG
-    - - codeclimate-test-reporter < **/*lcov.info
+    - codeclimate-test-reporter < **/*lcov.info
 after_success:
     - cd ${TRAVIS_BUILD_DIR}
     - lcov --directory . --capture --output-file coverage.info # capture coverage info
