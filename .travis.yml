@@ -65,8 +65,6 @@ install:
     - if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get install --no-install-recommends --no-upgrade -qq $PACKAGES; fi
     - sudo apt-get install lcov
 #    - cmake .
-    - make
-    - make check
 before_script:
     - if [ "$TRAVIS_EVENT_TYPE" = "pull_request" ]; then contrib/devtools/commit-script-check.sh $TRAVIS_COMMIT_RANGE; fi
     - unset CC; unset CXX
@@ -100,10 +98,11 @@ script:
     - if [ "$RUN_TESTS" = "true" ]; then src/test/test_bitcoin --coverage --quiet ${extended}; fi
 #    - coverage run test/functional/test_runner.py
 #    - py.test --cov=test/functional/test_runner.py test_folder
-#    - codeclimate-test-reporter --file .coverage
+    - codeclimate-test-reporter --file .coverage
 after_script:
     - echo $TRAVIS_COMMIT_RANGE
     - echo $TRAVIS_COMMIT_LOG
+    - - codeclimate-test-reporter < **/*lcov.info
 after_success:
     - cd ${TRAVIS_BUILD_DIR}
     - lcov --directory . --capture --output-file coverage.info # capture coverage info
@@ -112,7 +111,7 @@ after_success:
     - genhtml code_coverage.info --branch-coverage --output-directory ./code_coverage_report/
     - bash <(curl -s https://codecov.io/bash)
     - codecov
-#    - codeclimate-test-reporter
+    - codeclimate-test-reporter
 addons:
   coverity_scan:
     project:
