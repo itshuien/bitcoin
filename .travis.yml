@@ -1,7 +1,8 @@
 sudo: required
 dist: trusty
 os: linux
-language: generic
+language: cpp
+compiler: gcc
 cache:
   directories:
   - depends/built
@@ -13,10 +14,13 @@ addons:
           - ubuntu-toolchain-r-test
       packages:
           - lcov
+          - gcc-4.8
+          - g++-4.8
 env:
   global:
     - MAKEJOBS=-j3
     - RUN_TESTS=false
+    - RUN_UNIT_TESTS=true
     - CHECK_DOC=0
     - BOOST_TEST_RANDOM=1$TRAVIS_BUILD_ID
     - CCACHE_SIZE=100M
@@ -50,8 +54,8 @@ before_install:
     - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
     - sudo pip install codeclimate-test-reporter
     - pip install --user codecov
-    - pip install coverage
-    - sudo pip install pytest-cov
+#    - pip install coverage
+#    - sudo pip install pytest-cov
 #    - pip install -r requirements.txt
 install:
     - if [ -n "$DPKG_ADD_ARCH" ]; then sudo dpkg --add-architecture "$DPKG_ADD_ARCH" ; fi
@@ -86,7 +90,7 @@ script:
     - if [ "$RUN_TESTS" = "true" ]; then travis_wait 30 make $MAKEJOBS check VERBOSE=1; fi
     - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then extended="--extended --exclude pruning,dbcrash"; fi
 #    - if [ "$RUN_TESTS" = "true" ]; then test/functional/test_runner.py --coverage --quiet ${extended}; fi
-    - if [ "$RUN_TESTS" = "true" ]; then src/test/test_bitcoin.cpp
+    - if [ "$RUN_UNIT_TESTS" = "true" ]; then src/test/test_bitcoin.cpp
 #    - coverage run test/functional/test_runner.py
 #    - py.test --cov=test/functional/test_runner.py test_folder
 #    - codeclimate-test-reporter --file .coverage
