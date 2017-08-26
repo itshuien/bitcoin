@@ -2,7 +2,7 @@ sudo: required
 dist: trusty
 os: linux
 language: cpp
-compiler: clang
+#compiler: clang
 cache:
   directories:
   - depends/built
@@ -14,8 +14,8 @@ addons:
           - ubuntu-toolchain-r-test
       packages:
           - lcov
-          - gcc-4.8
-          - g++-4.8
+#          - gcc-4.8
+#          - g++-4.8
 env:
   global:
     - MAKEJOBS=-j3
@@ -91,7 +91,7 @@ script:
     - if [ "$RUN_TESTS" = "true" ]; then travis_wait 30 make $MAKEJOBS check VERBOSE=1; fi
     - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then extended="--extended --exclude pruning,dbcrash"; fi
 #    - if [ "$RUN_TESTS" = "true" ]; then test/functional/test_runner.py --coverage --quiet ${extended}; fi
-#    - if [ "$RUN_UNIT_TESTS" = "true" ]; then src/test/test_bitcoin.cpp
+    - if [ "$RUN_UNIT_TESTS" = "true" ]; then make check
 #    - coverage run test/functional/test_runner.py
 #    - py.test --cov=test/functional/test_runner.py test_folder
 #    - codeclimate-test-reporter --file .coverage
@@ -101,8 +101,9 @@ after_script:
 after_success:
     - cd ${TRAVIS_BUILD_DIR}
     - lcov --directory . --capture --output-file coverage.info # capture coverage info
-    - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
-    - lcov --list coverage.info
+#    - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
+#    - lcov --list coverage.info
+    - genhtml code_coverage.info --branch-coverage --output-directory ./code_coverage_report/
     - bash <(curl -s https://codecov.io/bash)
     - codecov
 #    - codeclimate-test-reporter
