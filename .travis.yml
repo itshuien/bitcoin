@@ -2,7 +2,7 @@ sudo: required
 dist: trusty
 os: linux
 language: cpp
-#compiler: clang
+compiler: gcc
 cache:
   directories:
   - depends/built
@@ -105,10 +105,10 @@ after_script:
     - codeclimate-test-reporter < **/*lcov.info
 after_success:
     - cd ${TRAVIS_BUILD_DIR}
-    - lcov --directory . --capture --output-file coverage.info # capture coverage info
+    - lcov --capture --directory . --output-file coverage.info # capture coverage info
 #    - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
 #    - lcov --list coverage.info
-    - genhtml code_coverage.info --branch-coverage --output-directory ./code_coverage_report/
+    - genhtml code_coverage.info --output-directory ./code_coverage_report/
     - bash <(curl -s https://codecov.io/bash)
     - codecov
     - codeclimate-test-reporter
