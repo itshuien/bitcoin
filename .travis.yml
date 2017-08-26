@@ -2,7 +2,7 @@ sudo: required
 dist: trusty
 os: linux
 language: cpp
-compiler: gcc
+#compiler: gcc
 cache:
   directories:
   - depends/built
@@ -90,7 +90,9 @@ script:
     - if [ "$RUN_TESTS" = "true" ]; then travis_wait 30 make $MAKEJOBS check VERBOSE=1; fi
     - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then extended="--extended --exclude pruning,dbcrash"; fi
 #    - if [ "$RUN_TESTS" = "true" ]; then test/functional/test_runner.py --coverage --quiet ${extended}; fi
-    - if [ "$RUN_UNIT_TESTS" = "true" ]; then src/test/test_bitcoin.cpp
+#    - if [ "$RUN_UNIT_TESTS" = "true" ]; then src/test/test_bitcoin.cpp
+    - test/functional/test_runner.py
+    - src/test/test_bitcoin.cpp
 #    - coverage run test/functional/test_runner.py
 #    - py.test --cov=test/functional/test_runner.py test_folder
 #    - codeclimate-test-reporter --file .coverage
