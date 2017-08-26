@@ -55,6 +55,7 @@ install:
     - if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get update; fi
     - if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get install --no-install-recommends --no-upgrade -qq $PACKAGES; fi
     - sudo apt-get install lcov
+    - pip install -r requirements.txt
     - pip install coverage
     - pip install codeclimate-test-reporter
 before_script:
