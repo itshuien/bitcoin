@@ -49,15 +49,15 @@ env:
 before_install:
     - export PATH=$(echo $PATH | tr ':' "\n" | sed '/\/opt\/python/d' | tr "\n" ":" | sed "s|::|:|g")
     - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
-    - pip install --user codecov
+    - pip install --user codecov    
+    - pip install -r requirements.txt
+    - pip install coverage
+    - pip install codeclimate-test-reporter
 install:
     - if [ -n "$DPKG_ADD_ARCH" ]; then sudo dpkg --add-architecture "$DPKG_ADD_ARCH" ; fi
     - if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get update; fi
     - if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get install --no-install-recommends --no-upgrade -qq $PACKAGES; fi
     - sudo apt-get install lcov
-    - pip install -r requirements.txt
-    - pip install coverage
-    - pip install codeclimate-test-reporter
 before_script:
     - if [ "$TRAVIS_EVENT_TYPE" = "pull_request" ]; then contrib/devtools/commit-script-check.sh $TRAVIS_COMMIT_RANGE; fi
     - unset CC; unset CXX
