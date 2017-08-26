@@ -15,7 +15,6 @@ addons:
           - lcov
 env:
   global:
-    - CODECLIMATE_REPO_TOKEN=83dd1bea1e863e28242671ceadde1667dc190dcba3fe24b263d399d7269fe2eb
     - MAKEJOBS=-j3
     - RUN_TESTS=false
     - CHECK_DOC=0
@@ -51,7 +50,7 @@ before_install:
     - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
     - pip install --user codecov
     - pip install coverage
-    - pip install -r requirements.txt
+#    - pip install -r requirements.txt
 install:
     - if [ -n "$DPKG_ADD_ARCH" ]; then sudo dpkg --add-architecture "$DPKG_ADD_ARCH" ; fi
     - if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get update; fi
