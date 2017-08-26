@@ -51,6 +51,7 @@ before_install:
     - sudo pip install codeclimate-test-reporter
     - pip install --user codecov
     - pip install coverage
+    - pip install pytest-cov
 #    - pip install -r requirements.txt
 install:
     - if [ -n "$DPKG_ADD_ARCH" ]; then sudo dpkg --add-architecture "$DPKG_ADD_ARCH" ; fi
@@ -85,7 +86,7 @@ script:
     - if [ "$RUN_TESTS" = "true" ]; then travis_wait 30 make $MAKEJOBS check VERBOSE=1; fi
     - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then extended="--extended --exclude pruning,dbcrash"; fi
     - if [ "$RUN_TESTS" = "true" ]; then test/functional/test_runner.py --coverage --quiet ${extended}; fi
-    - coverage run test/functional/test_runner.py
+    - coverage run /test/functional/test_runner.py
     - py.test --cov=test/functional/test_runner.py test_folder
     - codeclimate-test-reporter --file .coverage
 after_script:
