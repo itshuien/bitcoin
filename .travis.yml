@@ -92,8 +92,7 @@ script:
     - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then extended="--extended --exclude pruning,dbcrash"; fi
 #    - if [ "$RUN_TESTS" = "true" ]; then test/functional/test_runner.py --coverage --quiet ${extended}; fi
 #    - if [ "$RUN_UNIT_TESTS" = "true" ]; then src/test/test_bitcoin.cpp
-    - test/functional/test_runner.py
-    - src/test/test_bitcoin.cpp
+    - make check
 #    - coverage run test/functional/test_runner.py
 #    - py.test --cov=test/functional/test_runner.py test_folder
 #    - codeclimate-test-reporter --file .coverage
