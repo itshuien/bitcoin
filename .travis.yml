@@ -8,16 +8,7 @@ cache:
   - depends/built
   - depends/sdk-sources
   - $HOME/.ccache
-addons:
-  apt:
-      sources:
-          - ubuntu-toolchain-r-test
-      packages:
-          - lcov
-#          - cmake
-#          - cxxtest
-#          - gcc-4.8
-#          - g++-4.8
+
 env:
   global:
     - MAKEJOBS=-j3
@@ -50,6 +41,25 @@ env:
     - HOST=x86_64-unknown-linux-gnu PACKAGES="python3" DEP_OPTS="NO_WALLET=1" RUN_TESTS=true GOAL="install" BITCOIN_CONFIG="--enable-glibc-back-compat --enable-reduce-exports"
 # Cross-Mac
     - HOST=x86_64-apple-darwin11 PACKAGES="cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev" BITCOIN_CONFIG="--enable-gui --enable-reduce-exports" OSX_SDK=10.11 GOAL="deploy"
+
+addons:
+  apt:
+      sources:
+          - ubuntu-toolchain-r-test
+      packages:
+          - lcov
+#          - cmake
+#          - cxxtest
+#          - gcc-4.8
+#          - g++-4.8
+  coverity_scan:
+    project:
+      name: "itshuien/bitcoin"
+      description: "Build submitted via Travis CI"
+    notification_email: huien_wong@hotmail.com
+    build_command_prepend: "./autogen.sh; ./configure"
+    build_command: "make"
+    branch_pattern: testBranch
 
 before_install:
     - export PATH=$(echo $PATH | tr ':' "\n" | sed '/\/opt\/python/d' | tr "\n" ":" | sed "s|::|:|g")
@@ -112,12 +122,3 @@ after_success:
     - bash <(curl -s https://codecov.io/bash)
     - codecov
     - codeclimate-test-reporter
-addons:
-  coverity_scan:
-    project:
-      name: "itshuien/bitcoin"
-      description: "Build submitted via Travis CI"
-    notification_email: huien_wong@hotmail.com
-    build_command_prepend: "./autogen.sh; ./configure; make clean"
-    build_command: "make"
-    branch_pattern: testBranch
