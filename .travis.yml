@@ -76,6 +76,7 @@ install:
     - sudo apt-get install lcov
     - sudo apt-get install libdb++-dev
     - sudo apt-get install libboost-all-dev
+    - sudo apt-get install libevent-dev
 #    - cmake .
 before_script:
     - if [ "$TRAVIS_EVENT_TYPE" = "pull_request" ]; then contrib/devtools/commit-script-check.sh $TRAVIS_COMMIT_RANGE; fi
