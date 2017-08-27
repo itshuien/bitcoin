@@ -120,4 +120,4 @@ addons:
     notification_email: huien_wong@hotmail.com
     build_command_prepend: "./autogen.sh; ./configure; make clean"
     build_command: "make"
-    branch_pattern: coverity_scan
+    branch_pattern: testBranch
